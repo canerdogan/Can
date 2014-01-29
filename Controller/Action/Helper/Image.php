@@ -22,7 +22,9 @@ class Can_Controller_Action_Helper_Image extends Zend_Controller_Action_Helper_A
 	
 	public function save($filename, $image_type=IMAGETYPE_PNG, $compression=75, $permissions=null) {
 		if( $image_type == IMAGETYPE_JPEG ) {
-			imagejpeg($this->image,$filename,$compression);
+			if(!imagejpeg($this->image,$filename,$compression))
+				throw new Zend_Exception('Fuck off!');
+			
 		} elseif( $image_type == IMAGETYPE_GIF ) {
 			imagegif($this->image,$filename);
 		} elseif( $image_type == IMAGETYPE_PNG ) {
@@ -221,6 +223,9 @@ class Can_Controller_Action_Helper_Image extends Zend_Controller_Action_Helper_A
 				// Restore transparency blending
 				imagesavealpha($new_image, true);
 			}
+		}else{
+			$white = imagecolorallocate($new_image, 255, 255, 255);
+			imagefill($new_image, 0, 0, $white);
 		}
 
 		imagecopyresampled($new_image, $this->image, 0, 0, $left, $top, $target_width, $target_height, $width, $height);

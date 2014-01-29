@@ -17,10 +17,12 @@ class Can_Auth_Soup_AuthAdapter implements Zend_Auth_Adapter_Interface {
     protected $_user;
     protected $_email;
     protected $_password;
+	protected $_fblogin;
 
-    public function  __construct($email, $password) {
+    public function  __construct($email, $password, $fblogin = false) {
         $this->_email = $email;
         $this->_password = $password;
+		$this->_fblogin = $fblogin;
     }
 
     /**
@@ -38,7 +40,7 @@ class Can_Auth_Soup_AuthAdapter implements Zend_Auth_Adapter_Interface {
         	
 			if (!$this->_user)
         		throw new Zend_Exception(self::NOT_FOUND);
-        	else if ($this->_user[0]->password != md5($this->_password) )
+        	else if ($this->_user[0]->password != md5($this->_password) AND !$this->_fblogin)
         		throw new Zend_Exception(self::PASSWORD_MISMATCH);
             
         }catch (Exception $e) {
@@ -47,9 +49,13 @@ class Can_Auth_Soup_AuthAdapter implements Zend_Auth_Adapter_Interface {
             elseif($e->getMessage() == self::PASSWORD_MISMATCH)
                 return $this->result(Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND, self::BAD_PW_MESSAGE);
             else
-                return $this->result(Zend_Auth_Result::FAILURE, self::FAILURE_MESSAGE);
+                return $this->result(Zend_Auth_Result::FAILURE, $e->getMessage());
         }
-        
+
+		$date = new Zend_Date();
+		$this->_user[0]->updated_at = $date->toString(Zend_Date::YEAR . '-' . Zend_Date::MONTH . '-' . Zend_Date::DAY . ' ' . Zend_Date::HOUR . ':' . Zend_Date::MINUTE . ':' . Zend_Date::SECOND);
+		$this->_user[0]->save();
+
         return $this->result(Zend_Auth_Result::SUCCESS);
     }
 

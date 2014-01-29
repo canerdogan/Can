@@ -117,41 +117,41 @@ class Can_Controller_Action_Helper_Pager extends Zend_Controller_Action_Helper_A
 		$layout = array();
 		
 		if ($this->_foundRows > $this->_limit) {
-			$layout[] = '<div class="pagination pagination-centered"">';
-			$layout[] = '<ul>';
+			$layout[] = '<ul class="pagination pagination-centered">';
 			
 			if ($prev) {
 				// First Page
 			}
+			$layout[] = '<li class="first-page' . (! $prev ? ' disabled' : '') . '"><a href="' . (! $prev ? 'javascript:void(0);' : $this->_url . 'sayfa=1') . '">İlk</a></li>';
 			
 			// Prev Page
-			$layout[] = '<li class="prev' . (! $prev ? ' disabled' : '') . '"><a href="' . (! $prev ? 'javascript:void(0);' : $this->_url . 'sayfa=' . ($this->_page - 1)) . '" target="_top">← Önceki</a></li>';
+			$layout[] = '<li class="prev' . (! $prev ? ' disabled' : '') . '"><a href="' . (! $prev ? 'javascript:void(0);' : $this->_url . 'sayfa=' . ($this->_page - 1)) . '">← Önceki</a></li>';
 			
 			if ($minPage > 1)
-				$layout[] = '<li><a href="javascript:void(0);">...</a></li>';
+				$layout[] = '<li class="disabled"><a href="javascript:void(0);">...</a></li>';
 			
 			for ($i = $minPage; $i <= $maxPage; $i ++) {
 				if ($i == $this->_page) {
 					// Current Page
-					$layout[] = '<li class="active"><a href="' . $this->_url . 'sayfa=' . $i . '" target="_top">' . $i . '</a></li>';
+					$layout[] = '<li class="active"><a href="' . $this->_url . 'sayfa=' . $i . '">' . $i . '</a></li>';
 				} else {
 					// Page Numbers
-					$layout[] = '<li><a href="' . $this->_url . 'sayfa=' . $i . '" target="_top">' . $i . '</a></li>';
+					$layout[] = '<li><a href="' . $this->_url . 'sayfa=' . $i . '">' . $i . '</a></li>';
 				}
 			}
 			
 			if ($this->_pageSize > $maxPage)
-				$layout[] = '<li><a href="javascript:void(0);">...</a></li>';
+				$layout[] = '<li class="disabled"><a href="javascript:void(0);">...</a></li>';
 				
 				// Next Page
-			$layout[] = '<li class="next' . (! $next ? ' disabled' : '') . '"><a href="' . (! $next ? 'javascript:void(0);' : $this->_url . 'sayfa=' . ($this->_page + 1)) . '" target="_top">Sonraki →</a></li>';
+			$layout[] = '<li class="next' . (! $next ? ' disabled' : '') . '"><a href="' . (! $next ? 'javascript:void(0);' : $this->_url . 'sayfa=' . ($this->_page + 1)) . '">Sonraki →</a></li>';
 			
 			if ($next) {
 				// Last Page
 			}
+			$layout[] = '<li class="last-page' . (! $next ? ' disabled' : '') . '"><a href="' . (! $next ? 'javascript:void(0);' : $this->_url . 'sayfa=' . $this->_pageSize) . '">Son</a></li>';
 			
 			$layout[] = '</ul>';
-			$layout[] = '</div>';
 		}
 		
 		if ($this->_view == NULL) {
