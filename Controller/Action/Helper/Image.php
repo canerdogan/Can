@@ -23,7 +23,7 @@ class Can_Controller_Action_Helper_Image extends Zend_Controller_Action_Helper_A
 	public function save($filename, $image_type=IMAGETYPE_PNG, $compression=75, $permissions=null) {
 		if( $image_type == IMAGETYPE_JPEG ) {
 			if(!imagejpeg($this->image,$filename,$compression))
-				throw new Zend_Exception('Fuck off!');
+				throw new Zend_Exception('Permission problem!');
 			
 		} elseif( $image_type == IMAGETYPE_GIF ) {
 			imagegif($this->image,$filename);
