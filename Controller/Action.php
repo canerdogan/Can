@@ -25,7 +25,7 @@ class Can_Controller_Action extends Zend_Controller_Action
 			Zend_Registry::set('userDetails', $this->_userDetails);
 		}
 
-		$this->_session = new Zend_Session_Namespace('Mega');
+		$this->_session = new Zend_Session_Namespace($this->_config->app->name);
 	}
 
 }

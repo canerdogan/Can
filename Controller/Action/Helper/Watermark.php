@@ -11,8 +11,10 @@ class Can_Controller_Action_Helper_Watermark extends Zend_Controller_Action_Help
 		$this->pluginLoader = new Zend_Loader_PluginLoader();
 	}
 
-	function watermark($fileName, $path, $waterMarkLogo)
+	function watermark($file, $waterMarkLogo)
 	{
+		$path = dirname($file);
+		$fileName = basename($file);
 		if (!is_dir($path)) {
 			throw new Exception("Invalid directory path provided");
 		}
