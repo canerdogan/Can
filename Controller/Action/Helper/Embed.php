@@ -13,7 +13,7 @@ class Can_Controller_Action_Helper_Embed extends Zend_Controller_Action_Helper_A
 		$this->pluginLoader = new Zend_Loader_PluginLoader();
 	}
 
-	public function center($file, $waterMarkLogo)
+	public function center($file, $waterMarkLogo, $destination = NULL)
 	{
 		$path = dirname($file);
 		$fileName = basename($file);
@@ -23,7 +23,11 @@ class Can_Controller_Action_Helper_Embed extends Zend_Controller_Action_Helper_A
 		if (!file_exists($file)) {
 			throw new Exception("File doesn't exist in the given directory");
 		}
-		$destinationFile = $path . DIRECTORY_SEPARATOR . $fileName;
+		if (is_null($destination)) {
+			$destinationFile = $path . DIRECTORY_SEPARATOR . $fileName;
+		} else {
+			$destinationFile = $destination;
+		}
 		$stamp = $this->getImageStamp($waterMarkLogo);
 		$im = $this->getImageStamp($file);
 		$img = NULL;
@@ -88,14 +92,14 @@ class Can_Controller_Action_Helper_Embed extends Zend_Controller_Action_Helper_A
 		return $pathInfo['extension'];
 	}
 
-	public function direct($file, $waterMarkLogo = NULL)
+	public function direct($file, $waterMarkLogo = NULL, $destination = NULL)
 	{
 		if (!$waterMarkLogo) {
 			//default logo to watermark an image
 			$waterMarkLogo = IMAGE_PATH . DIRECTORY_SEPARATOR . "themes" . DIRECTORY_SEPARATOR . "copyright-logo.png";
 		}
 
-		return $this->center($file, $waterMarkLogo);
+		return $this->center($file, $waterMarkLogo, $destination);
 	}
 
 }
